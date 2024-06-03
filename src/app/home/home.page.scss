@@ -25,3 +25,42 @@
 #container a {
   text-decoration: none;
 }
+
+#botaoAdd {
+  font-size: 12px; 
+  text-transform: none; 
+  height: 30px; 
+  width: 120px; 
+}
+
+#lista ion-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; 
+}
+
+#lista ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+#cabecalho ion-col{ 
+  font-size: 14px; 
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+#corpo ion-col{
+}
+
+.centralizar-botao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%; 
+  font-size: 12px; 
+  text-transform: none; 
+}
+
+
