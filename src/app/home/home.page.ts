@@ -11,23 +11,23 @@ export class HomePage {
   produto:string = "";
   quantProduto:number = 0;
   precoProduto:number = 0.0;
-
   produtosEstoque:any = [];
+  produtoAtual:any = null;
 
   constructor(private http: HttpClient) {}
 
   addProduto() {
     //contante que recebe os valores que serão inseridos
-    const produto = {
+    const produtos = {
       nome_produto: this.produto,
       quantidade: this.quantProduto,
       preco: this.precoProduto
     };
     //Chama a api-estoque onde são inseridos os produtos no banco de dados, 
-    this.http.post('http://localhost:3000/inserirproduto', produto).subscribe(
+    this.http.post('http://localhost:3000/inserirproduto', produtos).subscribe(
       (resposta:any) => {
         console.log('Produto inserido com sucesso: ', resposta);
-        this.produtosEstoque.push(produto);
+        this.produtosEstoque.push(produtos);
         //Zera o campo de valores após a inserção 
         this.produto = '';
         this.quantProduto = 0;
@@ -48,13 +48,31 @@ export class HomePage {
         console.log(this.produtosEstoque);
       }
     );
-
   }
-  // apagarProduto(index:number) {
-  //   this.produtosEmEstoque.splice(index, 1)
-  // }
 
-  // async editarProduto(index:number) {
+  setProdutoAtual(produto: any) {
+    this.produtoAtual = produto;
+  }
+
+  apagarProduto() {
+      if(this.produtoAtual && this.produtoAtual.id){
+        const id = this.produtoAtual.id;
+        this.http.delete(`http://localhost:3000/excluirproduto/${id}`).subscribe(
+          (resposta:any) => {
+            console.log(`Produto excluido com sucesso: `, resposta);
+            this.produtosEstoque = this.produtosEstoque.filter((produto:any) => produto.id !== id);
+            this.produtoAtual = null;
+          },
+          (erro) => {
+            console.error('Erro ao excluir produto:', erro);
+          }
+        );
+      } else {
+        console.error('Erro: Produto atual ou ID do produto não definido');
+      }
+  }
+
+  // editarProduto(index:number) {
 
   //   const nomeAtual = this.produtosEmEstoque[index].nome;
   //   const quantidadeAtual = this.produtosEmEstoque[index].quantidade;

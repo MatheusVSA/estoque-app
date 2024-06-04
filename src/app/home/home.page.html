@@ -63,6 +63,17 @@
             <ion-col size="2">{{produtoAtual.preco}}</ion-col>
           </ion-row>
         </ion-grid>
+
+        <div slot="end">
+          <ion-button fill="clear">
+            <ion-icon name="pencil-outline"></ion-icon>
+          </ion-button>
+
+          <ion-button fill="clear" (click)="setProdutoAtual(produtoAtual); apagarProduto()">
+            <ion-icon name="trash"> </ion-icon>
+          </ion-button>
+        </div>
+
       </ion-item>
     </ion-list>
   </div>
