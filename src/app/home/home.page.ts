@@ -71,42 +71,4 @@ export class HomePage {
         console.error('Erro: Produto atual ou ID do produto não definido');
       }
   }
-
-  // editarProduto(index:number) {
-
-  //   const nomeAtual = this.produtosEmEstoque[index].nome;
-  //   const quantidadeAtual = this.produtosEmEstoque[index].quantidade;
-  //   const valorAtual = this.produtosEmEstoque[index].valor;
-    
-  //   let alerta = await this.alert.create
-  //   ({
-  //       header: 'Editar Produto',
-  //       message: 'Insira o novo nome',
-  //       inputs: [
-  //         {name: 'editarNome', value: nomeAtual}, 
-  //         {name: 'editarQuantidade', value: quantidadeAtual}, 
-  //         {name: 'editarValor', value: valorAtual}],
-        
-  //       buttons: [
-  //         {text: 'Cancelar', role: 'cancel'}, 
-
-  //           {text: 'Ok',
-  //           handler: (data) => {
-  //             const novoNome = data.editarNome;
-  //             const novaQuantidade = data.editarQuantidade;
-  //             const novoValor = data.editarValor;
-
-  //             this.produtosEmEstoque[index] = {
-  //               nome: novoNome,
-  //               quantidade: novaQuantidade,
-  //               valor: novoValor
-  //             };
-  //           }  
-  //         }
-  //       ]
-  //   });
-    
-  //   await alerta.present();
-  // }
-
 }
