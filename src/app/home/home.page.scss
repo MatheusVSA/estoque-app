@@ -51,7 +51,9 @@
   text-transform: uppercase;
 }
 
-#corpo ion-col{
+.botaoExEd {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .centralizar-botao {
@@ -62,5 +64,6 @@
   font-size: 12px; 
   text-transform: none; 
 }
+
 
 

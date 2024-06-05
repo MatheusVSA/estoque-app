@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ export class HomePage {
   produtosEstoque:any = [];
   produtoAtual:any = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private alert: AlertController) {}
 
   addProduto() {
     //contante que recebe os valores que serão inseridos
@@ -52,23 +53,91 @@ export class HomePage {
 
   setProdutoAtual(produto: any) {
     this.produtoAtual = produto;
+    console.log(produto.ID);
   }
 
   apagarProduto() {
-      if(this.produtoAtual && this.produtoAtual.id){
-        const id = this.produtoAtual.id;
-        this.http.delete(`http://localhost:3000/excluirproduto/${id}`).subscribe(
-          (resposta:any) => {
-            console.log(`Produto excluido com sucesso: `, resposta);
-            this.produtosEstoque = this.produtosEstoque.filter((produto:any) => produto.id !== id);
-            this.produtoAtual = null;
-          },
-          (erro) => {
-            console.error('Erro ao excluir produto:', erro);
-          }
-        );
-      } else {
-        console.error('Erro: Produto atual ou ID do produto não definido');
+    //constante que recebe o id que será enviado ao banco como parametro
+    const id = {
+      id_produto:this.produtoAtual.ID
+    }
+
+    //Conexão com a a Api
+    this.http.post(`http://localhost:3000/excluirproduto`, id).subscribe(
+      (resposta:any) => {
+        console.log(`Produto excluido com sucesso: `, resposta);
+        //Exclui os produtos da lista
+        this.produtosEstoque = this.produtosEstoque.filter((produto:any) => produto.id !== id);
+        this.produtoAtual = null;
+        
+        //Atualiza a lista com os produtos após a exclusão 
+        this.produtosEstoque = resposta.valueOf();
+        this.produtosEstoque = this.produtosEstoque['dados'];
+      },
+      (erro) => {
+        console.error('Erro ao excluir produto:', erro);
       }
+    );
+  }
+
+   async editarProduto(){
+    
+    const produtos = {
+      id_produto:this.produtoAtual.ID,
+      nome_produto: this.produtoAtual.nome,
+      quantidade: this.produtoAtual.quantidade,
+      preco: this.produtoAtual.preco
+    };
+
+    let alerta = await this.alert.create({
+      header: 'Editar Produto',
+      message: 'Insira o novo nome, quantidade e valor',
+      inputs: [
+        { name: 'editarNome', value: this.produtoAtual.nome_produto }, 
+        { name: 'editarQuantidade', value: this.produtoAtual.quantidade }, 
+        { name: 'editarValor', value: this.produtoAtual.preco }
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' }, 
+        { 
+          text: 'Ok',
+          handler: (data) => {
+            const novoNome = data.editarNome;
+            const novaQuantidade = data.editarQuantidade;
+            const novoValor = data.editarValor;
+
+            //atualiza o produto no estoque local
+            const index = this.produtosEstoque.findIndex((produto: any) => produto.ID === this.produtoAtual.ID);
+            if (index !== -1) {
+              this.produtosEstoque[index] = {
+                ...this.produtosEstoque[index],
+                nome_produto: novoNome,
+                quantidade: novaQuantidade,
+                preco: novoValor
+              };
+
+              //Produto atualizado
+              const novoProduto = {
+                id_produto: this.produtoAtual.ID,
+                nome_produto: novoNome,
+                quantidade: novaQuantidade,
+                preco: novoValor
+              }
+
+              this.http.post(`http://localhost:3000/editarproduto`, novoProduto).subscribe(
+                (resposta: any) => {
+                  console.log('Produto alterado com sucesso: ', resposta);
+
+                },
+                (erro) => {
+                  console.error('Erro ao editar produto:', erro);
+                }
+              );
+            }
+          }
+        }
+      ]
+    });
+    await alerta.present();
   }
 }
