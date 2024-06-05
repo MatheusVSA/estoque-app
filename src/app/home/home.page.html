@@ -18,17 +18,17 @@
     
     <ion-item id="item01">
       <ion-label position="floating" style="font-size: 12px;">Nome do produto:</ion-label>
-      <ion-input type="text" placeholder="nome do produto..." [(ngModel)]="produto"></ion-input>
+      <ion-input type="text" placeholder="nome do produto..." [(ngModel)]="produtos.nomeProduto"></ion-input>
     </ion-item>
     
     <ion-item>
       <ion-label position="floating">Quantidade:</ion-label>
-      <ion-input type="number" [(ngModel)]="quantProduto"></ion-input>
+      <ion-input type="number" [(ngModel)]="produtos.quantProduto"></ion-input>
     </ion-item>
     
     <ion-item>
       <ion-label position="floating">Valor:</ion-label>
-      <ion-input type="number" [(ngModel)]="precoProduto"></ion-input>
+      <ion-input type="number" [(ngModel)]="produtos.precoProduto"></ion-input>
     </ion-item>
 
     <ion-button (click)="addProduto()" color="warning" id="botaoAdd">
@@ -41,7 +41,7 @@
     <ion-button (click)="listarProdutos()" color="warning" id="botaoLista">Listar Produtos</ion-button>
   </div>
 
-  <div *ngIf="produtosEstoque.length > 0">
+  <div *ngIf="produtos.produtosEstoque.length > 0">
     <strong> Produtos em Estoque</strong>
   
     <ion-list id="lista">
@@ -56,7 +56,7 @@
         </ion-grid>
       </ion-item>
 
-      <ion-item *ngFor="let produtoAtual of produtosEstoque" id="corpo">
+      <ion-item *ngFor="let produtoAtual of produtos.produtosEstoque" id="corpo">
         <ion-grid>
           <ion-row>
             <ion-col size="2">{{produtoAtual.nome_produto}}</ion-col>
@@ -78,42 +78,4 @@
       </ion-item>
     </ion-list>
   </div>
-
-  <!-- <div padding id="listaExibicao">
-    <ion-list>
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="3">Nome:</ion-col>
-            <ion-col size="5">Quantidade:</ion-col>
-            <ion-col size="3">Preço:</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-
-      <ion-item *ngFor="let produtoAtual of produtosEstoque">
-        <ion-item>
-          <div>{{i+1}} - {{produtoAtual.nome}}</div>
-        </ion-item>
-
-        <ion-item>
-          <div>{{produtoAtual.quantidade}}</div>
-        </ion-item>
-
-        <ion-item>
-          <div>{{produtoAtual.valor}}</div>
-        </ion-item>
-
-        <div slot="end">
-          <ion-button fill="clear" (click)="editarProduto(i)">
-            <ion-icon name="pencil-outline"></ion-icon>
-          </ion-button>
-
-          <ion-button fill="clear" (click)="apagarProduto(i)">
-            <ion-icon name="trash"> </ion-icon>
-          </ion-button>
-        </div> -->
-      <!-- </ion-item>
-    </ion-list>
-  </div> -->
 </ion-content>
